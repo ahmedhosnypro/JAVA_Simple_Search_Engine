@@ -2,17 +2,16 @@ package search;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<String> userData = new ArrayList<>();
-
+    private static final HashMap<String, TreeSet<Integer>> invertedIndex = new HashMap<>();
 
     public static void main(String[] args) {
         addUserData(args);
+        createInvertedIndex();
         startActivity();
     }
 
@@ -35,6 +34,21 @@ public class Main {
         }
     }
 
+    private static void createInvertedIndex() {
+        int lineNum = 0;
+        for (var data : userData) {
+            var line = data.split(" ");
+            for (var word : line) {
+                if (invertedIndex.containsKey(word)) {
+                    invertedIndex.get(word).add(lineNum);
+                } else {
+                    invertedIndex.put(word, new TreeSet<>(Set.of(lineNum)));
+                }
+            }
+            lineNum++;
+        }
+    }
+
     private static void startActivity() {
         System.out.println("""
                                 
@@ -44,6 +58,7 @@ public class Main {
                 0. Exit""");
 
         int option = Integer.parseInt(scanner.nextLine());
+        System.out.println();
         switch (option) {
             case 1 -> findPerson();
             case 2 -> printPersons();
@@ -57,16 +72,15 @@ public class Main {
 
     private static void findPerson() {
         System.out.println("Enter a name or email to search all suitable people.");
-        String query = scanner.nextLine();
+        String toSearch = scanner.nextLine();
 
-        Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
-        if (userData.stream().noneMatch(d -> pattern.matcher(d).find())) {
+        if (!invertedIndex.containsKey(toSearch)) {
             System.out.println("No matching people found.");
             System.out.println();
         } else {
-            System.out.println();
-            System.out.println("Found people:");
-            userData.stream().filter(d -> pattern.matcher(d).find()).forEach(System.out::println);
+            for (Integer index : invertedIndex.get(toSearch)) {
+                System.out.println(userData.get(index));
+            }
         }
         startActivity();
     }

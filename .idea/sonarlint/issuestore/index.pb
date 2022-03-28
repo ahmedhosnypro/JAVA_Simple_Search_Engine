@@ -136,5 +136,7 @@ j
 KTopics/Multidimensional array/Multidimensional array features/src/Task.java,c\6\c6ffd750027c600b3c723691a0d44f1e8bad33c9
 r
 BTopics/Multidimensional array/Practical applications/src/Task.java,5\8\585054e584f968b078d9478277a611ded900ca76
-b
-2Topics/Multidimensional array/Theory/src/Task.java,c\5\c5229fcfe6273229fdc167e57105294cbb956369
+e
+5Simple Search Engine/Expand the search/task-info.yaml,1\7\174a0d17cd6e2cf29c85b738353d4d64bd6370a2
+]
+-Simple Search Engine/User menu/task-info.yaml,d\5\d530fe2eeca7e1b43c55441aaa353a27cd8f8740
