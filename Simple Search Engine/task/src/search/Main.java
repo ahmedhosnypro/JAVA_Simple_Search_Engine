@@ -1,5 +1,7 @@
 package search;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -10,15 +12,26 @@ public class Main {
 
 
     public static void main(String[] args) {
-        addUserData();
+        addUserData(args);
         startActivity();
     }
 
-    private static void addUserData() {
-        System.out.println("Enter the number of people:");
-        int dataNum = Integer.parseInt(scanner.nextLine());
-        for (int i = 0; i < dataNum; i++) {
-            userData.add(scanner.nextLine());
+    private static void addUserData(String[] args) {
+        if (args[0].equalsIgnoreCase("--data")) {
+
+            try (Scanner fileScanner = new Scanner(new File(args[1]))) {
+                while (fileScanner.hasNext()) {
+                    userData.add(fileScanner.nextLine());
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Enter the number of people:");
+            int dataNum = Integer.parseInt(scanner.nextLine());
+            for (int i = 0; i < dataNum; i++) {
+                userData.add(scanner.nextLine());
+            }
         }
     }
 
