@@ -292,9 +292,6 @@ files:
     }
 
   learner_created: false
-- name: names.txt
-  visible: true
-  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/5500#comment
 status: Solved
 feedback:

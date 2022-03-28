@@ -3,9 +3,11 @@ package search;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
+    private static final Searcher searcher = new Searcher();
     private static final ArrayList<String> userData = new ArrayList<>();
     private static final HashMap<String, TreeSet<Integer>> invertedIndex = new HashMap<>();
 
@@ -71,17 +73,20 @@ public class Main {
     }
 
     private static void findPerson() {
-        System.out.println("Enter a name or email to search all suitable people.");
-        String toSearch = scanner.nextLine();
+        System.out.println("Select a matching strategy: ALL, ANY, NONE");
+        String strategy = scanner.nextLine();
+        ArrayList<String> toSearch = Arrays.stream(scanner.nextLine().split(" "))
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        if (!invertedIndex.containsKey(toSearch)) {
-            System.out.println("No matching people found.");
-            System.out.println();
-        } else {
-            for (Integer index : invertedIndex.get(toSearch)) {
-                System.out.println(userData.get(index));
-            }
+        switch (strategy) {
+            case "ALL" -> searcher.setMethod(new AllMatching());
+            case "ANY" -> searcher.setMethod(new AnyMatching());
+            case "NONE" -> searcher.setMethod(new NoneMatching());
+            default -> throw new IllegalArgumentException();
         }
+
+        searcher.search(userData, toSearch);
+
         startActivity();
     }
 
